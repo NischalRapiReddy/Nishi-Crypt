@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Nishi-Crypt</title>
+
+    <style>
+        *{
+            font-family: 'Poppins', 'sans-serif';
+            font-weight: bold;
+        }
+
+        .inp-div {
+            width: 500px;
+        }
+
+        .fade-in { animation: fadeIn 1.5s; }
+            @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @media only screen and (max-device-width: 480px) {
+
+            .txt {
+                font-size: 16px;
+                padding: 1rem;
+            }
+
+            .inp-div {
+                width: 300px;
+            }
+
+            .alert {
+                margin-top: -5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="position-absolute top-50 start-50 translate-middle fade-in">
+        <div class="text-center">
+            <h1 class="shadow-lg p-3 rounded">🔑 Nishi Crypt 🔑</h1>
+        </div>
+
+        <div class="text-center">
+            <div class="mb-3 inp-div m-4">
+                <label for="txtinput" class="form-label">Your Text Goes Here👇🏻</label>
+                <textarea id="txt" class="form-control form-control-lg" id="txtinput" rows="10"></textarea>
+            </div>
+            <button type="submit" class="btn btn-outline-dark m-4" onclick="Post()">🔐Encrypt!!</button>
+        </div>
+        
+        <div class="container text-center">
+            <h4 class="fade-in txt">Built with 💖 By Nischal</h4>
+        </div>
+        <div id="alertarea"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+    <script type="text/javascript">
+
+        function Post() {
+            var txtVal = document.getElementById('txt').value
+            $.ajax({
+                type: "POST",
+                url: "/encdata",
+                data: {
+                    'text': txtVal
+                },
+                dataType: 'json',
+                success: function (ct) {
+                    cipherTxt = ct['data']
+                    var elem = document.createElement("textarea");
+                    var alertarea = document.getElementById("alertarea");
+
+                    elem.value = cipherTxt;
+                    document.body.appendChild(elem);
+                    elem.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(elem);
+
+                    alertarea.innerHTML = '<div class="alert alert-success fade-in text-center txt" role="alert">📋Encrypted Text Copied👍🏻✨</div>'
+                }
+            })
+        }
+    </script>
+</body>
+</html>
